@@ -23,10 +23,22 @@ async def notion_manager(request: Request, settings=Depends(get_settings)):
             print("Received an update without a message text.")
             return {"status": "ignored", "message": "No message"}
 
+        interpreter = settings.agent_factory.get_agent("interpreter")
         coordinator = settings.agent_factory.get_agent("coordinator")
 
+        # Primeiro, interpreta o comando do usuário
+        interpreter_prompt = f"""
+            Mensagem do usuário: {message}
+        """
+        interpreter_response = await interpreter.arun(interpreter_prompt)
+        print(f"Resposta do interpreter: {interpreter_response}")
+
         final_prompt = f"""
-            Originalmente o usuário requisitou: {message}            
+            ## Mensagem Original do Usuário
+            {message}
+
+            ## Comandos Interpretados pelo Interpreter Agent
+            {interpreter_response}
         """
         response = await coordinator.arun(final_prompt)
         print(f"Resposta do coordinator: {response.content}")
@@ -40,17 +52,31 @@ async def notion_manager(request: Request, settings=Depends(get_settings)):
 
 
 @manager.get("/test_manager")
-async def test(request: str, chat_id: str, settings=Depends(get_settings)):
+async def test(request: str, settings=Depends(get_settings)):
     try:
+        interpreter = settings.agent_factory.get_agent("interpreter")
         coordinator = settings.agent_factory.get_agent("coordinator")
 
-        final_prompt = f"""
+        interpreter_prompt = f"""
             Originalmente o usuário requisitou: {request}
         """
+
+        interpreter_response = await interpreter.arun(interpreter_prompt)
+        print(f"Resposta do interpreter: {interpreter_response}")
+
+        final_prompt = f"""
+            ## Mensagem Original do Usuário
+            {request}
+
+            ## Comandos Interpretados pelo Interpreter Agent
+            {interpreter_response.content}
+        """
+
         response = await coordinator.arun(final_prompt)
 
-        await bot.send_message(chat_id=chat_id, text=response.content)
-        print(f"Resposta do agent: {response.content}")
+        # await bot.send_message(chat_id=chat_id, text=response.content)
+
+        print(f"Resposta do coordinator: {response.content}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
