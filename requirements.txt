@@ -2,7 +2,7 @@
 #    uv export --no-hashes --output-file=requirements.txt
 agentops==0.4.21
     # via personal-notion-agent
-agno==1.7.1
+agno==1.8.0
     # via personal-notion-agent
 aiohappyeyeballs==2.6.1
     # via aiohttp
@@ -157,6 +157,7 @@ ordered-set==4.1.0
 packaging==24.2
     # via
     #   agentops
+    #   agno
     #   opentelemetry-instrumentation
 platformdirs==4.4.0
     # via virtualenv
