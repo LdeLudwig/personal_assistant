@@ -5,12 +5,10 @@ description = "Personal Notion Manager Agentic System"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "agentops>=0.4.21",
     "agno==1.7.1",
-    "awscli>=1.42.29",
-    "boto3>=1.40.29",
     "fastapi[standard]>=0.116.0",
     "google-genai>=1.32.0",
-    "mangum>=0.19.0",
     "notion-client>=2.4.0",
     "openai>=1.99.9",
     "pre-commit>=4.3.0",

@@ -45,7 +45,7 @@ class WorkProject(BaseModel):
         if self.status:
             props["Status"] = {"status": {"name": self.status}}
         if self.start or self.end:
-            props["Deadline"] = {
+            props["Date"] = {
                 "date": {
                     "start": isoformat_sp(self.start),
                     "end": isoformat_sp(self.end),

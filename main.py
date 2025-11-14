@@ -5,7 +5,9 @@ from fastapi.responses import RedirectResponse
 from personal_notion_agent.infrastructure.cors import setup_cors
 from personal_notion_agent.routes.manager import manager
 
+# Carregar variáveis de ambiente ANTES de inicializar observabilidade
 load_dotenv()
+
 
 app = FastAPI(title="Notion Manager Bot")
 

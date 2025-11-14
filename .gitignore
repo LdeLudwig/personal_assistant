@@ -19,5 +19,5 @@ pip-selfcheck.json
 *.egg-info
 __pycache__
 
-# End of https://www.toptal.com/developers/gitignore/api/venv
-.vercel
+docs
+*.log

@@ -21,6 +21,7 @@ from .prompts import (
     formatter_agent_prompt,
     coordinator_agent_prompt,
     telegram_agent_prompt,
+    interpreter_agent_prompt,
 )
 
 
@@ -28,11 +29,26 @@ class AgentFactory:
     def __init__(self, settings):
         self.settings = settings
 
-    def create_manager_agent(self):
-        manager_agent = Agent(
-            name="manager",
+    def create_interpreter_agent(self):
+        interpreter_agent = Agent(
+            name="interpreter",
             model=OpenRouter(
-                id=self.settings.gemini_pro_model_or,
+                id=self.settings.open_gpt_5,
+                api_key=self.settings.open_router_api_key,
+                temperature=self.settings.temperature,
+                max_tokens=None,
+            ),
+            instructions=dedent(interpreter_agent_prompt),
+            add_datetime_to_instructions=True,
+            show_tool_calls=True,
+        )
+        return interpreter_agent
+
+    def create_notion_agent(self):
+        notion_agent = Agent(
+            name="notion",
+            model=OpenRouter(
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
@@ -46,24 +62,22 @@ class AgentFactory:
                 update_task,
             ],
             add_datetime_to_instructions=True,
-            debug_mode=True,
             show_tool_calls=True,
         )
 
-        return manager_agent
+        return notion_agent
 
     def create_formatter_agent(self):
         formatter_agent = Agent(
             name="formatter",
             model=OpenRouter(
-                id=self.settings.gemini_flash_model_or,
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
             ),
             instructions=dedent(formatter_agent_prompt),
             add_datetime_to_instructions=True,
-            debug_mode=True,
         )
         return formatter_agent
 
@@ -71,7 +85,7 @@ class AgentFactory:
         telegram_agent = Agent(
             name="telegram",
             model=OpenRouter(
-                id=self.settings.gemini_flash_model_or,
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
@@ -79,15 +93,14 @@ class AgentFactory:
             instructions=dedent(telegram_agent_prompt),
             tools=[get_models],
             add_datetime_to_instructions=True,
-            debug_mode=True,
             show_tool_calls=True,
         )
         return telegram_agent
 
     def create_coordinator_agent(self):
-        manager_agent = self.create_manager_agent()
-        manager_agent.name = "manager"
-        manager_agent.role = "Especialista em gerenciar as tarefas e projetos no Notion"
+        notion_agent = self.create_notion_agent()
+        notion_agent.name = "notion"
+        notion_agent.role = "Especialista em gerenciar as tarefas e projetos no Notion"
 
         telegram_agent = self.create_telegram_agent()
         telegram_agent.name = "telegram"
@@ -101,14 +114,13 @@ class AgentFactory:
             name="coordinator",
             mode="coordinate",
             model=OpenRouter(
-                id=self.settings.gemini_pro_model_or,
+                id=self.settings.open_gpt_5,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
             ),
-            members=[manager_agent, telegram_agent, formatter_agent],
+            members=[notion_agent, telegram_agent, formatter_agent],
             instructions=dedent(coordinator_agent_prompt),
-            debug_mode=True,
             show_tool_calls=True,
         )
 
@@ -116,8 +128,9 @@ class AgentFactory:
 
     def get_agent(self, agent_name: str):
         mapper = {
+            "interpreter": self.create_interpreter_agent,
             "coordinator": self.create_coordinator_agent,
-            "manager": self.create_manager_agent,
+            "notion": self.create_notion_agent,
             "formatter": self.create_formatter_agent,
             "telegram": self.create_telegram_agent,
         }
