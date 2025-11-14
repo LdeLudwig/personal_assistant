@@ -20,3 +20,4 @@ pip-selfcheck.json
 __pycache__
 
 docs
+*.log

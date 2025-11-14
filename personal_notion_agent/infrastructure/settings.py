@@ -1,4 +1,5 @@
 import os
+import agentops
 from functools import lru_cache
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
@@ -19,18 +20,24 @@ class Settings(BaseModel):
     # telegram
     telegram_api_key: str = Field(default_factory=lambda: os.getenv("TELEGRAM_API_KEY"))
 
-    # Models
+    # Models Gemini client
     gemini_pro_model: str = Field(default_factory=lambda: os.getenv("GEMINI_PRO_MODEL"))
     gemini_flash_model: str = Field(
         default_factory=lambda: os.getenv("GEMINI_FLASH_MODEL")
     )
 
+    # Models Open Router client
     gemini_pro_model_or: str = Field(
         default_factory=lambda: os.getenv("GEMINI_PRO_MODEL_OR")
     )
     gemini_flash_model_or: str = Field(
         default_factory=lambda: os.getenv("GEMINI_FLASH_MODEL_OR")
     )
+    moonshotai_kimi_k2: str = Field(
+        default_factory=lambda: os.getenv("MOONSHOTAI_KIMI_K2")
+    )
+    openai_gpt_oss: str = Field(default_factory=lambda: os.getenv("OPENAI_GPT_OSS"))
+    open_gpt_5: str = Field(default_factory=lambda: os.getenv("OPENAI_GPT_5"))
 
     # Temperature
     temperature: float = Field(default_factory=lambda: float(os.getenv("TEMPERATURE")))
@@ -60,6 +67,8 @@ class Settings(BaseModel):
 
     # Initialize agent factory lazily to avoid circular import
     def model_post_init(self, __context: None):
+        agentops.init(api_key=os.getenv("AGENTOPS_API_KEY"))
+
         self.agent_factory = AgentFactory(self)
 
 

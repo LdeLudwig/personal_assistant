@@ -33,14 +33,13 @@ class AgentFactory:
         interpreter_agent = Agent(
             name="interpreter",
             model=OpenRouter(
-                id=self.settings.gemini_pro_model_or,
+                id=self.settings.open_gpt_5,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
             ),
             instructions=dedent(interpreter_agent_prompt),
             add_datetime_to_instructions=True,
-            debug_mode=True,
             show_tool_calls=True,
         )
         return interpreter_agent
@@ -49,7 +48,7 @@ class AgentFactory:
         notion_agent = Agent(
             name="notion",
             model=OpenRouter(
-                id=self.settings.gemini_flash_model_or,
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
@@ -63,7 +62,6 @@ class AgentFactory:
                 update_task,
             ],
             add_datetime_to_instructions=True,
-            debug_mode=True,
             show_tool_calls=True,
         )
 
@@ -73,14 +71,13 @@ class AgentFactory:
         formatter_agent = Agent(
             name="formatter",
             model=OpenRouter(
-                id=self.settings.gemini_flash_model_or,
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
             ),
             instructions=dedent(formatter_agent_prompt),
             add_datetime_to_instructions=True,
-            debug_mode=True,
         )
         return formatter_agent
 
@@ -88,7 +85,7 @@ class AgentFactory:
         telegram_agent = Agent(
             name="telegram",
             model=OpenRouter(
-                id=self.settings.gemini_flash_model_or,
+                id=self.settings.openai_gpt_oss,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
@@ -96,7 +93,6 @@ class AgentFactory:
             instructions=dedent(telegram_agent_prompt),
             tools=[get_models],
             add_datetime_to_instructions=True,
-            debug_mode=True,
             show_tool_calls=True,
         )
         return telegram_agent
@@ -118,14 +114,13 @@ class AgentFactory:
             name="coordinator",
             mode="coordinate",
             model=OpenRouter(
-                id=self.settings.gemini_pro_model_or,
+                id=self.settings.open_gpt_5,
                 api_key=self.settings.open_router_api_key,
                 temperature=self.settings.temperature,
                 max_tokens=None,
             ),
             members=[notion_agent, telegram_agent, formatter_agent],
             instructions=dedent(coordinator_agent_prompt),
-            debug_mode=True,
             show_tool_calls=True,
         )
 

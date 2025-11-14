@@ -62,7 +62,7 @@ async def test(request: str, settings=Depends(get_settings)):
         """
 
         interpreter_response = await interpreter.arun(interpreter_prompt)
-        print(f"Resposta do interpreter: {interpreter_response}")
+        print(f"Resposta do interpreter: {interpreter_response.content}")
 
         final_prompt = f"""
             ## Mensagem Original do Usuário
