@@ -35,12 +35,13 @@ wheels = [
 
 [[package]]
 name = "agno"
-version = "1.7.1"
+version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "docstring-parser" },
     { name = "gitpython" },
     { name = "httpx" },
+    { name = "packaging" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
@@ -51,9 +52,9 @@ dependencies = [
     { name = "typer" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/95/ba/322c85c37841342e45ea6d57a6113597487946cfbdb35d414c3a87a920c3/agno-1.7.1.tar.gz", hash = "sha256:23d1065ed31989479541813a1311ceb368ebd3e6a5be03c79723b4a1aecaf476", size = 659253, upload-time = "2025-07-04T08:12:31.934Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/52/7afcebfe54c41b254c6b70cebf518836823d4e88640e59101eeb1975f0ae/agno-1.8.0.tar.gz", hash = "sha256:53682e35da6e9babed8eb7db04e4295aaf41f92057fbb20311ba460a66884370", size = 751934, upload-time = "2025-08-25T13:02:30.519Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8f/5c/9e61844d8cd5962d16ab69484dc451a49c911385f630ae6b253dc7991a28/agno-1.7.1-py3-none-any.whl", hash = "sha256:068db72a8db99ece518c18f7fdf21e708f27b203606cf414fa76094307dae183", size = 881007, upload-time = "2025-07-04T08:12:29.62Z" },
+    { url = "https://files.pythonhosted.org/packages/de/05/17ca6e2d057b906127a7e17e27246be3bbd7a85497ac2c294ec7746273df/agno-1.8.0-py3-none-any.whl", hash = "sha256:cd718085e7e2db75ffc6b02f8aa2190f5849aecbb5baabe3ebb052385934cb9a", size = 993915, upload-time = "2025-08-25T13:02:28.785Z" },
 ]
 
 [[package]]
@@ -1050,7 +1051,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "agentops", specifier = ">=0.4.21" },
-    { name = "agno", specifier = "==1.7.1" },
+    { name = "agno", specifier = "==1.8.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.116.0" },
     { name = "google-genai", specifier = ">=1.32.0" },
     { name = "notion-client", specifier = ">=2.4.0" },
