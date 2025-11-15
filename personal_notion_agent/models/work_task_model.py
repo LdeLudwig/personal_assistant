@@ -39,7 +39,7 @@ class WorkTask(BaseModel):
         props: dict = {
             "Name": {"title": [{"text": {"content": self.name}}]},
         }
-        props["Project"] = {"relation": {"id": self.project}}
+        props["Project"] = {"relation": [{"id": self.project}]}
         if self.priority:
             props["Priority"] = {"select": {"name": self.priority}}
         if self.status:

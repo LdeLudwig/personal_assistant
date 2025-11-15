@@ -40,8 +40,8 @@ class WorkProject(BaseModel):
         }
         if self.priority:
             props["Priority"] = {"select": {"name": self.priority}}
-        if self.tags:
-            props["Tags"] = {"select": [{"name": self.tag}]}
+        if self.tag:
+            props["Tags"] = {"select": {"name": self.tag}}
         if self.status:
             props["Status"] = {"status": {"name": self.status}}
         if self.start or self.end:

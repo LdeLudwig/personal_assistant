@@ -33,9 +33,7 @@ class PersonalTask(BaseModel):
         if self.priority:
             props["Priority"] = {"select": {"name": self.priority}}
         if self.work_tasks:
-            props["Work Tasks"] = {
-                "work_tasks": [{"id": pid} for pid in self.work_tasks]
-            }
+            props["Work Tasks"] = {"relation": [{"id": pid} for pid in self.work_tasks]}
         if self.status:
             props["Status"] = {"status": {"name": self.status}}
         if self.start or self.end:
