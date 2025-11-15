@@ -155,23 +155,36 @@ def find_task_by_title(name: str, title: str):
 
 @tool(
     name="create_new_tasks",
-    description="Cria uma nova tarefa no banco pessoal usando o modelo PersonalTask (name obrigatório; priority, status, relation, start, end opcionais).",
+    description="Cria página em 'pessoal'|'trabalho'|'projetos' usando o modelo correspondente. Regras: (1) em 'pessoal', 'work_tasks' deve conter IDs de tarefas de trabalho; (2) em 'trabalho', 'project' deve conter o ID do projeto de trabalho. Antes de criar, resolva IDs com 'find_task_by_title' ou 'find_task_by_id'; se não encontrar/ambíguo, use 'list_tasks' e solicite confirmação ao usuário. name é obrigatório; priority, status, start, end opcionais; datas ISO 8601.",
 )
 def create_new_tasks(name: str, data: dict):
     """
-    Cria uma nova tarefa em um database do Notion.
+    Cria uma nova página em um database do Notion a partir do grupo informado.
 
-    Args:
-        name (str): Nome do database ('pessoal', 'trabalho', 'projetos')
-        data (dict): Dados da tarefa. Campos por database:
-            - PersonalTask: name* (obrigatório), priority, status, work_tasks, start, end
-            - WorkTask: name*, project* (obrigatórios), priority, status, start, end
-            - WorkProject: name* (obrigatório), priority, tag, status, start, end
-            Datas no formato ISO 8601 (YYYY-MM-DD)
+    Campos aceitos por database:
+      - PersonalTask (pessoal): name*; priority; status; work_tasks (lista de IDs de tarefas de trabalho); start; end
+      - WorkTask (trabalho): name*; project* (ID do projeto de trabalho); priority; status; start; end
+      - WorkProject (projetos): name*; priority; tag; status; start; end
+      Datas no formato ISO 8601 (YYYY-MM-DD ou YYYY-MM-DDTHH:MM:SS).
+
+    Regras CRÍTICAS para relações:
+      1) work_tasks (pessoal): deve ser uma lista de IDs de tarefas do database "trabalho".
+      2) project (trabalho): deve ser o ID de um projeto do database "projetos".
+      3) Nunca invente IDs. Sempre resolva previamente conforme abaixo.
+
+    Como resolver IDs antes de chamar esta tool:
+      - Se o usuário informar nomes: use find_task_by_title no database adequado ("trabalho" para work_tasks; "projetos" para project).
+        • 1 resultado → use o id.
+        • 0 ou >1 resultados → chame list_tasks no database adequado e RETORNE opções ao usuário para confirmar; não crie até confirmar.
+      - Se o usuário informar um ID: valide com find_task_by_id; se não existir, retorne erro.
+
+    Exemplos rápidos:
+      - create_new_tasks("pessoal", {"name": "Planejar semana", "work_tasks": ["<WORK_TASK_ID_1>", "<WORK_TASK_ID_2>"], "start": "2025-11-15"})
+      - create_new_tasks("trabalho", {"name": "Implementar feature X", "project": "<WORK_PROJECT_ID>", "priority": "High"})
+      - create_new_tasks("projetos", {"name": "Site Novo", "tag": "Consultant", "status": "Planning"})
 
     Returns:
-        dict: Objeto da página criada com id, properties, url, etc.
-        None: Se houver erro
+        dict: Objeto da página criada (id, properties, url, etc.) ou None em caso de erro.
     """
     try:
         group = group_identify(name)
