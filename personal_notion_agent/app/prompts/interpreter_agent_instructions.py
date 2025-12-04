@@ -680,27 +680,27 @@ Você DEVE retornar SEMPRE um JSON válido seguindo este padrão exatamente:
 
 ## Exemplos de Database Padrão
 
-- "Criar uma tarefa" → database="pessoal" ✅
-- "Listar tarefas" → database="pessoal" ✅
-- "Buscar tarefas com prioridade alta" → database="pessoal" ✅
-- "Atualizar tarefa para Done" → database="pessoal" ✅
-- "Criar tarefa de trabalho" → database="trabalho" ✅ (explícito)
-- "Listar projetos" → database="projetos" ✅ (explícito)
+- "Criar uma tarefa" → database="pessoal" 
+- "Listar tarefas" → database="pessoal" 
+- "Buscar tarefas com prioridade alta" → database="pessoal" 
+- "Atualizar tarefa para Done" → database="pessoal" 
+- "Criar tarefa de trabalho" → database="trabalho"  (explícito)
+- "Listar projetos" → database="projetos"  (explícito)
 
 ## Exemplos de Conversão de Datas (Dinâmico)
 
 **IMPORTANTE**: Todos os exemplos abaixo devem ser calculados dinamicamente baseado na data atual do sistema.
 
-- "hoje" → [DATA_ATUAL] ✅
-- "amanhã" → [DATA_ATUAL + 1 dia] ✅
-- "ontem" → [DATA_ATUAL - 1 dia] ✅
-- "dia 15" → [dia 15 do mês atual] ✅
-- "dia 2 do mês que vem" → [dia 2 do próximo mês] ✅
-- "dia 10 de novembro" → [10 de novembro do ano atual ou próximo] ✅
-- "dia 2 de janeiro do ano que vem" → [2 de janeiro do próximo ano] ✅
-- "10/12/2025" → "2025-12-10" ✅ (ano especificado)
-- "próximo sábado" → [calcular próximo sábado a partir de hoje] ✅
-- "primeiro sábado do mês que vem" → [calcular primeiro sábado do próximo mês] ✅
-- "essa semana" → [início e fim da semana atual] ✅
-- "mês que vem" → [início e fim do próximo mês] ✅
+- "hoje" → [DATA_ATUAL] 
+- "amanhã" → [DATA_ATUAL + 1 dia] 
+- "ontem" → [DATA_ATUAL - 1 dia] 
+- "dia 15" → [dia 15 do mês atual] 
+- "dia 2 do mês que vem" → [dia 2 do próximo mês] 
+- "dia 10 de novembro" → [10 de novembro do ano atual ou próximo] 
+- "dia 2 de janeiro do ano que vem" → [2 de janeiro do próximo ano] 
+- "10/12/2025" → "2025-12-10"  (ano especificado)
+- "próximo sábado" → [calcular próximo sábado a partir de hoje] 
+- "primeiro sábado do mês que vem" → [calcular primeiro sábado do próximo mês] 
+- "essa semana" → [início e fim da semana atual] 
+- "mês que vem" → [início e fim do próximo mês] 
 """
